@@ -42,8 +42,11 @@ public class main {
         //queryAlum.createAlumno(objAlum);
 
         //UPDATE
-        objAlum.setId(4);
-        queryAlum.updateAlumno(objAlum);
+        /*objAlum.setId(4);
+        queryAlum.updateAlumno(objAlum);*/
+        
+        //SELECT ALL ALUMNOS
+        queryAlum.getAlumnos();
     }
 
 }

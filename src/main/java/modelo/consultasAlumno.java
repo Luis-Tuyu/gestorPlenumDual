@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
@@ -50,11 +51,11 @@ public class consultasAlumno extends conexion {
 
     public boolean updateAlumno(alumno alum) {
         Connection con = getConexion();
-        String sql= "UPDATE alumno SET matricula=?, nombre=?, apellido=?, fechaNacimiento=?, celular=?, domicilio=?, id_escuela=? ,id_modalidad=?, id_cicloEscolar=? "
+        String sql = "UPDATE alumno SET matricula=?, nombre=?, apellido=?, fechaNacimiento=?, celular=?, domicilio=?, id_escuela=? ,id_modalidad=?, id_cicloEscolar=? "
                 + "WHERE id=?";
         try {
             ps = con.prepareStatement(sql);
-            
+
             ps.setString(1, alum.getMatricula());
             ps.setString(2, alum.getNombre());
             ps.setString(3, alum.getApellido());
@@ -65,21 +66,45 @@ public class consultasAlumno extends conexion {
             ps.setInt(8, alum.getId_modalidad());
             ps.setInt(9, alum.getId_ciclo());
             ps.setInt(10, alum.getId());
-            
+
             ps.execute();
             JOptionPane.showMessageDialog(null, "Usuario actualizado con exito");
             return true;
-        }catch(SQLException err){
+        } catch (SQLException err) {
             System.out.println(err);
             JOptionPane.showMessageDialog(null, "Error al actualizar alumno");
             return false;
-        }finally {
+        } finally {
             //cerramos la conexion de BD
             try {
                 con.close();
             } catch (SQLException e) {
                 System.out.println(e);
             }
+        }
+    }
+
+    public void getAlumnos() {
+
+        try {
+            Connection con = getConexion();
+            String sql = "SELECT  A.nombre, A.apellido, E.nombre \"escuela\", M.nombre \"modalidad\", concat(CE.año ,\" \",CE.periodo) as \"periodo\" FROM alumno A, escuela E, modalidad M, cicloEscolar CE\n"
+                    + "WHERE A.id_escuela = E.id AND A.id_modalidad = M.id AND A.id_cicloEscolar = CE.id ";
+
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            ResultSetMetaData resultMD = rs.getMetaData();
+            int contColum = resultMD.getColumnCount();
+
+            while (rs.next()) {
+                for (int i=0; i<contColum; i++ ) {
+                    System.out.println(rs.getObject(i+1));
+                }
+            }
+
+        }catch(SQLException err){
+            System.err.print(err);
         }
     }
 
