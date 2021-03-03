@@ -107,5 +107,29 @@ public class consultasAlumno extends conexion {
             System.err.print(err);
         }
     }
+    
+    public boolean deleteAlumno(alumno alum){
+                Connection con = getConexion();
+        String sql = "DELETE FROM  alumno WHERE id=?";
+        try {
+            ps = con.prepareStatement(sql);
+
+            ps.setInt(1, alum.getId());
+            ps.execute();
+            JOptionPane.showMessageDialog(null, "Usuario eliminado con exito");
+            return true;
+        } catch (SQLException err) {
+            System.out.println(err);
+            JOptionPane.showMessageDialog(null, "Error al eliminar alumno");
+            return false;
+        } finally {
+            //cerramos la conexion de BD
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }
 
 }
