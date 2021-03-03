@@ -13,6 +13,14 @@ public class usuario {
     private String telefono;
     private String domicilio;
 
+    public String getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
+    }
+
     public int getId() {
         return id;
     }

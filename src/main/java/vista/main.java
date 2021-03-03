@@ -7,6 +7,8 @@ package vista;
 import modelo.consultasEscuela;
 import modelo.consultasModalidad;
 import modelo.consultasCiclosEscolares;
+import modelo.alumno;
+import modelo.consultasAlumno;
 
 public class main {
 
@@ -18,9 +20,26 @@ public class main {
        consultasModalidad objModalidad = new consultasModalidad();
        consultasCiclosEscolares objCiclosEsc = new consultasCiclosEscolares();
        
-       objEscuela.getEscuelas();
+       /*objEscuela.getEscuelas();
        objModalidad.getModalidad();
-       objCiclosEsc.getCiclosEscolares();
+       objCiclosEsc.getCiclosEscolares();*/
+       
+       /*probar las operaciones con alumno*/
+       alumno objAlum = new alumno();
+       objAlum.setNombre("Luis");
+       objAlum.setApellido("Chale");
+       objAlum.setMatricula("e172345");
+       objAlum.setTelefono("992412903");
+       objAlum.setCorreo("jose@gmail.com");
+       objAlum.setDomicilio("chablekal, Mexico");
+       objAlum.setFechaNacimiento("1999-04-26");
+       objAlum.setId_ciclo(1);
+       objAlum.setId_escuela(2);//Es del tec
+       objAlum.setId_modalidad(2); //es servicio social
+               
+       
+       consultasAlumno queryAlum = new consultasAlumno();
+       queryAlum.createAlumno(objAlum);
        
     }
     
