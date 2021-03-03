@@ -28,7 +28,7 @@ public class main {
         alumno objAlum = new alumno();
         objAlum.setNombre("Luis");
         objAlum.setApellido("Chale");
-        objAlum.setMatricula("e17234535");
+        objAlum.setMatricula("e17081482");
         objAlum.setTelefono("992412903");
         objAlum.setCorreo("jose@gmail.com");
         objAlum.setDomicilio("chablekal, Mexico");
@@ -49,8 +49,11 @@ public class main {
         //queryAlum.getAlumnos();
         
         //DELETE
-        objAlum.setId(4);
-        queryAlum.deleteAlumno(objAlum);
+        //objAlum.setId(4);
+        //queryAlum.deleteAlumno(objAlum);
+        
+        //FIND BY MATRICULA
+        queryAlum.findAlumno(objAlum);
     }
 
 }

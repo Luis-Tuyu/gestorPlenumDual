@@ -98,18 +98,18 @@ public class consultasAlumno extends conexion {
             int contColum = resultMD.getColumnCount();
 
             while (rs.next()) {
-                for (int i=0; i<contColum; i++ ) {
-                    System.out.println(rs.getObject(i+1));
+                for (int i = 0; i < contColum; i++) {
+                    System.out.println(rs.getObject(i + 1));
                 }
             }
 
-        }catch(SQLException err){
+        } catch (SQLException err) {
             System.err.print(err);
         }
     }
-    
-    public boolean deleteAlumno(alumno alum){
-                Connection con = getConexion();
+
+    public boolean deleteAlumno(alumno alum) {
+        Connection con = getConexion();
         String sql = "DELETE FROM  alumno WHERE id=?";
         try {
             ps = con.prepareStatement(sql);
@@ -130,6 +130,28 @@ public class consultasAlumno extends conexion {
                 System.out.println(e);
             }
         }
+    }
+
+    public void findAlumno(alumno alum) {
+        try {
+            Connection con = getConexion();
+            String sql = "SELECT  A.nombre, A.apellido, E.nombre \"escuela\", M.nombre \"modalidad\", concat(CE.año ,\" \",CE.periodo) as \"periodo\" FROM alumno A, escuela E, modalidad M, cicloEscolar CE\n"
+                    + "WHERE A.matricula=? AND A.id_escuela = E.id AND A.id_modalidad = M.id AND A.id_cicloEscolar = CE.id ";
+
+            ps = con.prepareStatement(sql);
+            ps.setString(1,alum.getMatricula());
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                System.out.println(rs.getString("nombre"));
+            }
+            
+            
+        }catch (SQLException err) {
+            System.err.print(err);
+        }   
+        
+          
     }
 
 }
