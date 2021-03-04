@@ -5,13 +5,24 @@
  */
 package modelo;
 
+import java.util.ArrayList;
+
 public class alumno  extends usuario{
     
     private String matricula;
     private int id_escuela;
     private int id_modalidad;
     private int id_ciclo;
+    private ArrayList<calificacion> calificaciones;
 
+    public ArrayList<calificacion> getCalificaciones() {
+        return calificaciones;
+    }
+
+    public void addCalificaciones(calificacion cali) {
+        calificaciones.add(cali);
+    }
+    
     public int getId_escuela() {
         return id_escuela;
     }

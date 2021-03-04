@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package vista;
+package gestorPlenum;
 
 import modelo.consultasEscuela;
 import modelo.consultasModalidad;
 import modelo.consultasCiclosEscolares;
 import modelo.alumno;
 import modelo.consultasAlumno;
-
+import modelo.consultasCalificacion;
 public class main {
 
     /**
@@ -20,7 +20,8 @@ public class main {
         consultasEscuela objEscuela = new consultasEscuela();
         consultasModalidad objModalidad = new consultasModalidad();
         consultasCiclosEscolares objCiclosEsc = new consultasCiclosEscolares();
-
+        consultasCalificacion objCalificaciones =  new consultasCalificacion();
+        
         /*objEscuela.getEscuelas();
        objModalidad.getModalidad();
        objCiclosEsc.getCiclosEscolares();*/
@@ -28,7 +29,7 @@ public class main {
         alumno objAlum = new alumno();
         objAlum.setNombre("Luis");
         objAlum.setApellido("Chale");
-        objAlum.setMatricula("e17081482");
+        objAlum.setMatricula("e170814824");
         objAlum.setTelefono("992412903");
         objAlum.setCorreo("jose@gmail.com");
         objAlum.setDomicilio("chablekal, Mexico");
@@ -53,7 +54,14 @@ public class main {
         //queryAlum.deleteAlumno(objAlum);
         
         //FIND BY MATRICULA
-        queryAlum.findAlumno(objAlum);
+        //queryAlum.findAlumno(objAlum);
+        
+        
+        //getCalificaciones
+        //Suspendido no funciono
+        //objCalificaciones.getCalificaciones();
+       
+     
     }
 
 }
