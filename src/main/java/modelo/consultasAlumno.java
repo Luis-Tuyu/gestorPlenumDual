@@ -52,7 +52,7 @@ public class consultasAlumno extends conexion {
 
     public boolean updateAlumno(alumno alum) {
         Connection con = getConexion();
-        String sql = "UPDATE alumno SET matricula=?, nombre=?, apellido=?, fechaNacimiento=?, celular=?, domicilio=?, id_escuela=? ,id_modalidad=?, id_cicloEscolar=? "
+        String sql = "UPDATE alumno SET matricula=?, nombre=?, apellido=?, fechaNacimiento=?, celular=?, domicilio=?, email=?, id_escuela=? ,id_modalidad=?, id_cicloEscolar=? "
                 + "WHERE id=?";
         try {
             ps = con.prepareStatement(sql);
@@ -63,17 +63,18 @@ public class consultasAlumno extends conexion {
             ps.setDate(4, Date.valueOf(alum.getFechaNacimiento()));
             ps.setString(5, alum.getTelefono());
             ps.setString(6, alum.getDomicilio());
-            ps.setInt(7, alum.getId_escuela());
-            ps.setInt(8, alum.getId_modalidad());
-            ps.setInt(9, alum.getId_ciclo());
-            ps.setInt(10, alum.getId());
+            ps.setString(7, alum.getCorreo());
+            ps.setInt(8, alum.getId_escuela());
+            ps.setInt(9, alum.getId_modalidad());
+            ps.setInt(10, alum.getId_ciclo());
+            ps.setInt(11, alum.getId());
 
             ps.execute();
-            JOptionPane.showMessageDialog(null, "Usuario actualizado con exito");
+            //JOptionPane.showMessageDialog(null, "Usuario actualizado con exito");
             return true;
         } catch (SQLException err) {
             System.out.println(err);
-            JOptionPane.showMessageDialog(null, "Error al actualizar alumno");
+            //JOptionPane.showMessageDialog(null, "Error al actualizar alumno");
             return false;
         } finally {
             //cerramos la conexion de BD
@@ -137,7 +138,7 @@ public class consultasAlumno extends conexion {
         alumno objAlum = new alumno();
         try {
             Connection con = getConexion();
-            String sql = "SELECT  A.nombre, A.apellido,A.fechaNacimiento,A.celular, A.Domicilio,  A.email,E.id \"escuelaId\", M.id \"modId\", CE.id \"cicloId\" FROM alumno A, escuela E, modalidad M, cicloEscolar CE\n"
+            String sql = "SELECT  A.id, A.nombre, A.apellido,A.fechaNacimiento,A.celular, A.Domicilio,  A.email,E.id \"escuelaId\", M.id \"modId\", CE.id \"cicloId\" FROM alumno A, escuela E, modalidad M, cicloEscolar CE\n"
                     + "WHERE A.matricula=? AND A.id_escuela = E.id AND A.id_modalidad = M.id AND A.id_cicloEscolar = CE.id ";
 
             ps = con.prepareStatement(sql);
@@ -145,6 +146,7 @@ public class consultasAlumno extends conexion {
             rs = ps.executeQuery();
             
             if(rs.next()){
+                objAlum.setId(Integer.parseInt(rs.getString("id")));
                 objAlum.setNombre(rs.getString("nombre"));
                 objAlum.setApellido(rs.getString("apellido"));
                 objAlum.setFechaNacimiento(rs.getString("fechaNacimiento"));

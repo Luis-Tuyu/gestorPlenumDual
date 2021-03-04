@@ -45,6 +45,7 @@ public class ctrAlumno implements ActionListener {
         this.frmAlumno.btnGuardar.addActionListener(this);
         this.frmAlumno.btnLimpiar.addActionListener(this);
         this.frmAlumno.btnBuscar.addActionListener(this);
+        this.frmAlumno.btnActualizar.addActionListener(this);
 
         //Inicializar combo box, previamente consultas BD
         escuelas = queryEscuela.getEscuelas();
@@ -99,7 +100,6 @@ public class ctrAlumno implements ActionListener {
             objAlum = queryAlumno.findAlumno(frmAlumno.txtMatricula.getText());
 
             if (objAlum.getNombre() != null) {
-                showComboBox();
                 //colocar los resultados
                 frmAlumno.txtNombre.setText(objAlum.getNombre());
                 frmAlumno.txtApellido.setText(objAlum.getApellido());
@@ -117,6 +117,26 @@ public class ctrAlumno implements ActionListener {
 
             /*prueba para ver los item selecions*/
             //System.out.println(frmAlumno.cbCicloEsc.getSelectedIndex());
+        } else if (e.getSource() == frmAlumno.btnActualizar) {
+
+            objAlum.setMatricula(frmAlumno.txtMatricula.getText());
+            objAlum.setNombre(frmAlumno.txtNombre.getText());
+            objAlum.setApellido(frmAlumno.txtApellido.getText());
+            objAlum.setFechaNacimiento(frmAlumno.txtFecha.getText());
+            objAlum.setTelefono(frmAlumno.txtCelular.getText());
+            objAlum.setCorreo(frmAlumno.txtCorreoElectronico.getText());
+            objAlum.setDomicilio(frmAlumno.txtDomicilio.getText());
+            //LLAVES FORANEAS
+            objAlum.setId_escuela(frmAlumno.cbEscuelas.getSelectedIndex());
+            objAlum.setId_modalidad(frmAlumno.cbModalidad.getSelectedIndex());
+            objAlum.setId_ciclo(frmAlumno.cbCicloEsc.getSelectedIndex());
+            
+            if (queryAlumno.updateAlumno(objAlum)){
+                 JOptionPane.showMessageDialog(null, "Alumno actualizado");
+            }else{
+                 JOptionPane.showMessageDialog(null, "Error al actualizar alumno");
+            }
+     
         }
 
     }
@@ -139,19 +159,5 @@ public class ctrAlumno implements ActionListener {
         frmAlumno.cbModalidad.setSelectedIndex(0);
     }
 
-    public void showComboBox() {
-        escuelas = queryEscuela.getEscuelas();
-        for (escuela itemEscuela : escuelas) {
-            frmAlumno.cbEscuelas.addItem(itemEscuela.getNombre());
-        }
-        modalidades = queryModalidad.getModalidad();
-        for (modalidad itemModalidad : modalidades) {
-            frmAlumno.cbModalidad.addItem(itemModalidad.getNombre());
-        }
-        ciclosEsc = queryCiclosEscolares.getCiclosEscolares();
-        for (cicloEscolar itemCicloEsc : ciclosEsc) {
-            frmAlumno.cbCicloEsc.addItem(itemCicloEsc.getAño() + " " + itemCicloEsc.getPeriodo());
-        }
-    }
 
 }
