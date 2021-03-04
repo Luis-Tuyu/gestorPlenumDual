@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import modelo.consultasAlumno;
 import modelo.consultasEscuela;
-import vista.frmAlumnos;
+import vista.PanelAlumnos;
 import modelo.alumno;
 import modelo.cicloEscolar;
 import modelo.consultasCiclosEscolares;
@@ -27,7 +27,7 @@ public class ctrAlumno implements ActionListener {
     //variables globales
     private alumno objAlum;
     private consultasAlumno queryAlumno;
-    private frmAlumnos frmAlumno;
+    private PanelAlumnos frmAlumno;
     private ArrayList<escuela> escuelas = new ArrayList<>();
     consultasEscuela queryEscuela = new consultasEscuela();
     private ArrayList<modalidad> modalidades = new ArrayList<>();
@@ -35,7 +35,7 @@ public class ctrAlumno implements ActionListener {
     private ArrayList<cicloEscolar> ciclosEsc = new ArrayList<>();
     consultasCiclosEscolares queryCiclosEscolares = new consultasCiclosEscolares();
 
-    public ctrAlumno(consultasAlumno queryAlumno, frmAlumnos frmAlumno, alumno objAlumno) {
+    public ctrAlumno(consultasAlumno queryAlumno, PanelAlumnos frmAlumno, alumno objAlumno) {
         this.queryAlumno = queryAlumno;
         this.frmAlumno = frmAlumno;
         this.objAlum = objAlumno;
@@ -96,9 +96,9 @@ public class ctrAlumno implements ActionListener {
 
     }
 
-    public void iniciar() {
-        frmAlumno.setTitle("Alumnos");
-        frmAlumno.setLocationRelativeTo(null);
+    public PanelAlumnos iniciar() {
+        frmAlumno.setSize(900,500);
+        return frmAlumno;
     }
     
     public void reiniciar(){

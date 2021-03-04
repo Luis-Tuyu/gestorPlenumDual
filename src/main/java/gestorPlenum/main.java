@@ -11,20 +11,20 @@ import modelo.consultasCiclosEscolares;
 import modelo.alumno;
 import modelo.consultasAlumno;
 import modelo.consultasCalificacion;
-import controlador.ctrAlumno;
-import vista.frmAlumnos;
+import controlador.ctrMain;
+import vista.Menu;
 public class main {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        consultasEscuela objEscuela = new consultasEscuela();
+        /*consultasEscuela objEscuela = new consultasEscuela();
         
         consultasModalidad objModalidad = new consultasModalidad();
         consultasCiclosEscolares objCiclosEsc = new consultasCiclosEscolares();
         consultasCalificacion objCalificaciones =  new consultasCalificacion();
-        
+        */
         
         /*objEscuela.getEscuelas();
        objModalidad.getModalidad();
@@ -67,10 +67,16 @@ public class main {
        
         //INICIALIZAR LA VISTA DE ALUMNOS
         //vista alumno
-        frmAlumnos vistaAlum = new frmAlumnos();
+        /**frmAlumnos vistaAlum = new frmAlumnos();
         ctrAlumno ctrlAlum = new ctrAlumno(queryAlum, vistaAlum, objAlum);
         ctrlAlum.iniciar();
-        vistaAlum.setVisible(true);
+        vistaAlum.setVisible(true);**/
+        
+        //Enlazando varias vistas en Menu
+        Menu objMenu = new Menu();
+        ctrMain main = new ctrMain(objMenu);
+        main.iniciar();
+        objMenu.setVisible(true);
     }
 
 }
