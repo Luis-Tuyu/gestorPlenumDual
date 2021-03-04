@@ -11,6 +11,8 @@ import modelo.consultasCiclosEscolares;
 import modelo.alumno;
 import modelo.consultasAlumno;
 import modelo.consultasCalificacion;
+import controlador.ctrAlumno;
+import vista.frmAlumnos;
 public class main {
 
     /**
@@ -18,9 +20,11 @@ public class main {
      */
     public static void main(String[] args) {
         consultasEscuela objEscuela = new consultasEscuela();
+        
         consultasModalidad objModalidad = new consultasModalidad();
         consultasCiclosEscolares objCiclosEsc = new consultasCiclosEscolares();
         consultasCalificacion objCalificaciones =  new consultasCalificacion();
+        
         
         /*objEscuela.getEscuelas();
        objModalidad.getModalidad();
@@ -61,7 +65,12 @@ public class main {
         //Suspendido no funciono
         //objCalificaciones.getCalificaciones();
        
-     
+        //INICIALIZAR LA VISTA DE ALUMNOS
+        //vista alumno
+        frmAlumnos vistaAlum = new frmAlumnos();
+        ctrAlumno ctrlAlum = new ctrAlumno(queryAlum, vistaAlum, objAlum);
+        ctrlAlum.iniciar();
+        vistaAlum.setVisible(true);
     }
 
 }
