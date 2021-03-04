@@ -16,8 +16,8 @@ public class consultasAlumno extends conexion {
 
     public boolean createAlumno(alumno alum) {
         Connection con = getConexion();
-        String sql = "INSERT INTO alumno (matricula, nombre, apellido, fechaNacimiento, celular, domicilio, id_escuela, id_modalidad, id_cicloEscolar)"
-                + "values (?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO alumno (matricula, nombre, apellido, fechaNacimiento, celular, domicilio,email, id_escuela, id_modalidad, id_cicloEscolar)"
+                + "values (?,?,?,?,?,?,?,?,?,?)";
 
         try {
             ps = con.prepareStatement(sql);
@@ -27,9 +27,10 @@ public class consultasAlumno extends conexion {
             ps.setDate(4, Date.valueOf(alum.getFechaNacimiento()));
             ps.setString(5, alum.getTelefono());
             ps.setString(6, alum.getDomicilio());
-            ps.setInt(7, alum.getId_escuela());
-            ps.setInt(8, alum.getId_modalidad());
-            ps.setInt(9, alum.getId_ciclo());
+            ps.setString(7, alum.getCorreo());
+            ps.setInt(8, alum.getId_escuela());
+            ps.setInt(9, alum.getId_modalidad());
+            ps.setInt(10, alum.getId_ciclo());
 
             ps.execute();
             JOptionPane.showMessageDialog(null, "Usuario creado con exito");
@@ -132,18 +133,27 @@ public class consultasAlumno extends conexion {
         }
     }
 
-    public void findAlumno(alumno alum) {
+    public alumno findAlumno(String matricula) {
+        alumno objAlum = new alumno();
         try {
             Connection con = getConexion();
-            String sql = "SELECT  A.nombre, A.apellido, E.nombre \"escuela\", M.nombre \"modalidad\", concat(CE.año ,\" \",CE.periodo) as \"periodo\" FROM alumno A, escuela E, modalidad M, cicloEscolar CE\n"
+            String sql = "SELECT  A.nombre, A.apellido,A.fechaNacimiento,A.celular, A.Domicilio,  A.email,E.id \"escuelaId\", M.id \"modId\", CE.id \"cicloId\" FROM alumno A, escuela E, modalidad M, cicloEscolar CE\n"
                     + "WHERE A.matricula=? AND A.id_escuela = E.id AND A.id_modalidad = M.id AND A.id_cicloEscolar = CE.id ";
 
             ps = con.prepareStatement(sql);
-            ps.setString(1,alum.getMatricula());
+            ps.setString(1,matricula);
             rs = ps.executeQuery();
             
             if(rs.next()){
-                System.out.println(rs.getString("nombre"));
+                objAlum.setNombre(rs.getString("nombre"));
+                objAlum.setApellido(rs.getString("apellido"));
+                objAlum.setFechaNacimiento(rs.getString("fechaNacimiento"));
+                objAlum.setTelefono(rs.getString("celular"));
+                objAlum.setCorreo(rs.getString("email"));
+                objAlum.setDomicilio(rs.getString("Domicilio"));
+                objAlum.setId_escuela(Integer.parseInt(rs.getString("escuelaId")));
+                objAlum.setId_modalidad(Integer.parseInt(rs.getString("modId")));
+                objAlum.setId_ciclo(Integer.parseInt(rs.getString("cicloId")));
             }
             
             
@@ -151,7 +161,7 @@ public class consultasAlumno extends conexion {
             System.err.print(err);
         }   
         
-          
+       return objAlum;   
     }
 
 }

@@ -8,6 +8,7 @@ package controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import modelo.consultasAlumno;
 import modelo.consultasEscuela;
 import vista.PanelAlumnos;
@@ -43,6 +44,7 @@ public class ctrAlumno implements ActionListener {
         //botones del frame
         this.frmAlumno.btnGuardar.addActionListener(this);
         this.frmAlumno.btnLimpiar.addActionListener(this);
+        this.frmAlumno.btnBuscar.addActionListener(this);
 
         //Inicializar combo box, previamente consultas BD
         escuelas = queryEscuela.getEscuelas();
@@ -76,11 +78,11 @@ public class ctrAlumno implements ActionListener {
             objAlum.setCorreo(frmAlumno.txtCorreoElectronico.getText());
             objAlum.setDomicilio(frmAlumno.txtDomicilio.getText());
             //LLAVES FORANEAS
-            objAlum.setId_escuela(utilsEsc.getIdByName((String) frmAlumno.cbEscuelas.getSelectedItem(),escuelas));
+            objAlum.setId_escuela(utilsEsc.getIdByName((String) frmAlumno.cbEscuelas.getSelectedItem(), escuelas));
             objAlum.setId_modalidad(utilsMod.getIdByName((String) frmAlumno.cbModalidad.getSelectedItem(), modalidades));
             objAlum.setId_ciclo(utilsCicloEsc.getIdByName(frmAlumno.cbCicloEsc.getSelectedItem().toString().substring(5), Integer.parseInt(frmAlumno.cbCicloEsc.getSelectedItem().toString().substring(0, 4)), ciclosEsc));
             queryAlumno.createAlumno(objAlum);
-            
+
             /* //TEST
             System.out.println("idEscuela-->"+utilsEsc.getIdByName((String) frmAlumno.cbEscuelas.getSelectedItem(),escuelas));
             System.out.println("idModalidad-->"+utilsMod.getIdByName((String) frmAlumno.cbModalidad.getSelectedItem(), modalidades));
@@ -89,19 +91,42 @@ public class ctrAlumno implements ActionListener {
             System.out.println("IdCicloEscolar-->"+utilsCicloEsc.getIdByName(frmAlumno.cbCicloEsc.getSelectedItem().toString().substring(5), Integer.parseInt(frmAlumno.cbCicloEsc.getSelectedItem().toString().substring(0, 4)), ciclosEsc));
             System.out.println("");*/
             reiniciar();
-        }else if(e.getSource() == frmAlumno.btnLimpiar){
+        } else if (e.getSource() == frmAlumno.btnLimpiar) {
             reiniciar();
-            
+
+        } else if (e.getSource() == frmAlumno.btnBuscar) {
+
+            objAlum = queryAlumno.findAlumno(frmAlumno.txtMatricula.getText());
+
+            if (objAlum.getNombre() != null) {
+                showComboBox();
+                //colocar los resultados
+                frmAlumno.txtNombre.setText(objAlum.getNombre());
+                frmAlumno.txtApellido.setText(objAlum.getApellido());
+                frmAlumno.txtFecha.setText(objAlum.getFechaNacimiento());
+                frmAlumno.txtCelular.setText(objAlum.getTelefono());
+                frmAlumno.txtCorreoElectronico.setText(objAlum.getCorreo());
+                frmAlumno.txtDomicilio.setText(objAlum.getDomicilio());
+
+                frmAlumno.cbCicloEsc.setSelectedIndex(objAlum.getId_ciclo());
+                frmAlumno.cbEscuelas.setSelectedIndex(objAlum.getId_escuela());
+                frmAlumno.cbModalidad.setSelectedIndex(objAlum.getId_modalidad());
+            } else {
+                JOptionPane.showMessageDialog(null, "Alumno no encontrado");
+            }
+
+            /*prueba para ver los item selecions*/
+            //System.out.println(frmAlumno.cbCicloEsc.getSelectedIndex());
         }
 
     }
 
     public PanelAlumnos iniciar() {
-        frmAlumno.setSize(900,500);
+        frmAlumno.setSize(900, 500);
         return frmAlumno;
     }
-    
-    public void reiniciar(){
+
+    public void reiniciar() {
         frmAlumno.txtNombre.setText(null);
         frmAlumno.txtApellido.setText(null);
         frmAlumno.txtMatricula.setText(null);
@@ -112,6 +137,21 @@ public class ctrAlumno implements ActionListener {
         frmAlumno.cbEscuelas.setSelectedIndex(0);
         frmAlumno.cbCicloEsc.setSelectedIndex(0);
         frmAlumno.cbModalidad.setSelectedIndex(0);
+    }
+
+    public void showComboBox() {
+        escuelas = queryEscuela.getEscuelas();
+        for (escuela itemEscuela : escuelas) {
+            frmAlumno.cbEscuelas.addItem(itemEscuela.getNombre());
+        }
+        modalidades = queryModalidad.getModalidad();
+        for (modalidad itemModalidad : modalidades) {
+            frmAlumno.cbModalidad.addItem(itemModalidad.getNombre());
+        }
+        ciclosEsc = queryCiclosEscolares.getCiclosEscolares();
+        for (cicloEscolar itemCicloEsc : ciclosEsc) {
+            frmAlumno.cbCicloEsc.addItem(itemCicloEsc.getAño() + " " + itemCicloEsc.getPeriodo());
+        }
     }
 
 }

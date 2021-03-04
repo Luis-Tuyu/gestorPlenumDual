@@ -12,7 +12,7 @@ import vista.panelInicio;
 public class ctrMain implements ActionListener {
 
     private Menu frmMenu;
-
+    private ctrAlumno objAlu =null;
     public ctrMain(Menu frmMenu) {
         this.frmMenu = frmMenu;
         this.frmMenu.jmiAlumno.addActionListener(this);
@@ -36,7 +36,7 @@ public class ctrMain implements ActionListener {
             consultasAlumno queryAlumno = new consultasAlumno();
             alumno objAlum = new alumno();
 
-            ctrAlumno objAlu = new ctrAlumno(queryAlumno, pt, objAlum);
+            objAlu = new ctrAlumno(queryAlumno, pt, objAlum);
 
             //repintar el panel
             frmMenu.mainPanel.removeAll();
