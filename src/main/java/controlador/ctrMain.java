@@ -8,6 +8,7 @@ import modelo.consultasAlumno;
 import modelo.alumno;
 import controlador.ctrlInicio;
 import vista.panelInicio;
+import modelo.consultasCalificacion;
 
 public class ctrMain implements ActionListener {
 
@@ -18,7 +19,8 @@ public class ctrMain implements ActionListener {
         this.frmMenu.jmiAlumno.addActionListener(this);
         this.frmMenu.jmiCalificaciones.addActionListener(this);
         this.frmMenu.jmiListado.addActionListener(this);
-
+        this.frmMenu.jmiCalificaciones.addActionListener(this);
+        
         //iniar la vista principal
         panelInicio objPI = new panelInicio();
         ctrlInicio ctrPI = new ctrlInicio(objPI);
@@ -51,6 +53,9 @@ public class ctrMain implements ActionListener {
             frmMenu.mainPanel.add(ctrPI.iniciar());
             frmMenu.mainPanel.revalidate();
             frmMenu.mainPanel.repaint();
+        }else if(e.getSource() == frmMenu.jmiCalificaciones){
+            consultasCalificacion queryCali = new consultasCalificacion();
+            queryCali.getCalificacionesv2();
         }
     }
 

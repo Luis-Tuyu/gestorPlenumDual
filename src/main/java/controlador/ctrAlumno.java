@@ -46,6 +46,7 @@ public class ctrAlumno implements ActionListener {
         this.frmAlumno.btnLimpiar.addActionListener(this);
         this.frmAlumno.btnBuscar.addActionListener(this);
         this.frmAlumno.btnActualizar.addActionListener(this);
+        this.frmAlumno.btnEliminar.addActionListener(this);
 
         //Inicializar combo box, previamente consultas BD
         escuelas = queryEscuela.getEscuelas();
@@ -93,6 +94,7 @@ public class ctrAlumno implements ActionListener {
             System.out.println("");*/
             reiniciar();
         } else if (e.getSource() == frmAlumno.btnLimpiar) {
+            
             reiniciar();
 
         } else if (e.getSource() == frmAlumno.btnBuscar) {
@@ -137,6 +139,10 @@ public class ctrAlumno implements ActionListener {
                  JOptionPane.showMessageDialog(null, "Error al actualizar alumno");
             }
      
+        }else if (e.getSource() == frmAlumno.btnEliminar) {
+            
+            queryAlumno.deleteAlumno(frmAlumno.txtMatricula.getText());
+        
         }
 
     }

@@ -8,6 +8,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class consultasAlumno extends conexion {
 
@@ -86,37 +88,48 @@ public class consultasAlumno extends conexion {
         }
     }
 
-    public void getAlumnos() {
+    public void getAlumnos(JTable tabla) {
 
         try {
             Connection con = getConexion();
-            String sql = "SELECT  A.nombre, A.apellido, E.nombre \"escuela\", M.nombre \"modalidad\", concat(CE.año ,\" \",CE.periodo) as \"periodo\" FROM alumno A, escuela E, modalidad M, cicloEscolar CE\n"
+            String sql = "SELECT  A.matricula, CONCAT(A.nombre,\" \",A.apellido) as \"nombre\", E.nombre \"escuela\", M.nombre \"modalidad\", concat(CE.año ,\" \",CE.periodo) as \"periodo\" FROM alumno A, escuela E, modalidad M, cicloEscolar CE\n"
                     + "WHERE A.id_escuela = E.id AND A.id_modalidad = M.id AND A.id_cicloEscolar = CE.id ";
 
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
+            DefaultTableModel modelo = new DefaultTableModel();
+            modelo.addColumn("Matricula");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Escuela");
+            modelo.addColumn("Curso");
+            modelo.addColumn("Modalidad");
+            tabla.setRowHeight(30);
+            tabla.setFont(new java.awt.Font("Tahoma", 0, 15));
 
             ResultSetMetaData resultMD = rs.getMetaData();
             int contColum = resultMD.getColumnCount();
 
             while (rs.next()) {
+                Object [] filas = new Object[contColum];
                 for (int i = 0; i < contColum; i++) {
-                    System.out.println(rs.getObject(i + 1));
+                   filas[i]= rs.getObject(i + 1);
                 }
+                modelo.addRow(filas);
             }
-
+            
+        tabla.setModel(modelo);
         } catch (SQLException err) {
             System.err.print(err);
         }
     }
 
-    public boolean deleteAlumno(alumno alum) {
+    public boolean deleteAlumno(String matricula) {
         Connection con = getConexion();
-        String sql = "DELETE FROM  alumno WHERE id=?";
+        String sql = "DELETE FROM  alumno WHERE matricula=?";
         try {
             ps = con.prepareStatement(sql);
 
-            ps.setInt(1, alum.getId());
+            ps.setString(1, matricula);
             ps.execute();
             JOptionPane.showMessageDialog(null, "Usuario eliminado con exito");
             return true;
@@ -142,10 +155,10 @@ public class consultasAlumno extends conexion {
                     + "WHERE A.matricula=? AND A.id_escuela = E.id AND A.id_modalidad = M.id AND A.id_cicloEscolar = CE.id ";
 
             ps = con.prepareStatement(sql);
-            ps.setString(1,matricula);
+            ps.setString(1, matricula);
             rs = ps.executeQuery();
-            
-            if(rs.next()){
+
+            if (rs.next()) {
                 objAlum.setId(Integer.parseInt(rs.getString("id")));
                 objAlum.setNombre(rs.getString("nombre"));
                 objAlum.setApellido(rs.getString("apellido"));
@@ -157,13 +170,12 @@ public class consultasAlumno extends conexion {
                 objAlum.setId_modalidad(Integer.parseInt(rs.getString("modId")));
                 objAlum.setId_ciclo(Integer.parseInt(rs.getString("cicloId")));
             }
-            
-            
-        }catch (SQLException err) {
+
+        } catch (SQLException err) {
             System.err.print(err);
-        }   
-        
-       return objAlum;   
+        }
+
+        return objAlum;
     }
 
 }
